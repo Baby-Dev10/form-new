@@ -5,16 +5,17 @@ import { ISession } from "../models/session";
 const generatePDF = (booking: ISession, res: Response): void => {
   const doc = new PDFDocument({ margin: 50 });
 
-  // Pipe the PDF into the response
-  res.setHeader("Content-Disposition", `attachment; filename=receipt.pdf`);
+  // Set headers for PDF download
+  res.setHeader("Content-Disposition", "attachment; filename=receipt.pdf");
   res.setHeader("Content-Type", "application/pdf");
+
   doc.pipe(res);
 
-  // Header
+  // === HEADER ===
   doc
-    .fontSize(22)
     .font("Helvetica-Bold")
-    .text("Session Booking Receipt", { align: "center" })
+    .fontSize(22)
+    .text("SESSION BOOKING RECEIPT", { align: "center" })
     .moveDown(0.5);
 
   doc
@@ -23,16 +24,15 @@ const generatePDF = (booking: ISession, res: Response): void => {
     .text(`Date: ${new Date().toLocaleDateString()}`, { align: "right" })
     .moveDown(1);
 
-  // Divider Line
-  doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
-  doc.moveDown(1);
+  // === DIVIDER LINE ===
+  doc.moveTo(50, doc.y).lineTo(550, doc.y).lineWidth(1).stroke().moveDown(1.5);
 
-  // Booking Details (Table-like Structure)
+  // === BOOKING DETAILS ===
   doc
     .fontSize(14)
     .font("Helvetica-Bold")
     .text("Booking Details", { underline: true })
-    .moveDown(0.5);
+    .moveDown(0.8);
 
   const details = [
     { label: "Full Name", value: booking.name },
@@ -47,15 +47,14 @@ const generatePDF = (booking: ISession, res: Response): void => {
       .text(`${label}: `, { continued: true })
       .font("Helvetica")
       .text(value)
-      .moveDown(0.3);
+      .moveDown(0.5);
   });
 
-  // Divider Line
+  // === SECOND DIVIDER LINE ===
   doc.moveDown(1);
-  doc.moveTo(50, doc.y).lineTo(550, doc.y).stroke();
-  doc.moveDown(1);
+  doc.moveTo(50, doc.y).lineTo(550, doc.y).lineWidth(1).stroke().moveDown(1);
 
-  // Footer
+  // === FOOTER SECTION ===
   doc
     .fontSize(12)
     .font("Helvetica-Oblique")
@@ -65,8 +64,10 @@ const generatePDF = (booking: ISession, res: Response): void => {
   doc
     .fontSize(10)
     .font("Helvetica")
+    .fillColor("blue")
     .text("For any inquiries, contact us at support@example.com", {
       align: "center",
+      link: "mailto:support@example.com",
     });
 
   doc.end();
