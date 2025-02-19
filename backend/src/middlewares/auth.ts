@@ -23,7 +23,7 @@ export const auth = async (
       userId: string;
     };
 
-    req.user = { userId: decoded.userId }; // ✅ Attach userId properly
+    req.user = { userId: decoded.userId };
 
     next();
   } catch (error) {
