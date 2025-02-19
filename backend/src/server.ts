@@ -8,7 +8,7 @@ import sessionRoutes from "./routes/session";
 dotenv.config();
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "https://form-new-omega.vercel.app/"], // or an array of allowed origins
+  origin: ["http://localhost:5173", "https://form-new-omega.vercel.app"], // or an array of allowed origins
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true, // if you need to send cookies or auth headers
   // Optionally, you can specify allowed headers
@@ -22,7 +22,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://form-session-iota.vercel.app", // Your React frontend URL
+    origin: "https://form-new-omega.vercel.app/", // Your React frontend URL
     methods: "GET,POST", // Allowed methods
     allowedHeaders: "Content-Type,Authorization", // Allowed headers
     credentials: true, // If using cookies or authentication
