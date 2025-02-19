@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import Session from "../models/session";
-
-// import { sendEmail } from "../utils/sendEmail";
+import User from "../models/User";
 
 export const getAllSessions = async (
   req: Request,
@@ -38,22 +37,19 @@ export const updateSessionStatus = async (
     await session.save();
 
     // Send email notification
-    const emailSubject =
-      status === "approved"
-        ? "Session Booking Approved"
-        : "Session Booking Cancelled";
-    const emailText =
-      status === "approved"
-        ? `Your session booking has been approved. You can now access your sessions.`
-        : `Your session booking has been cancelled. Please contact support for more information.`;
+    // const emailSubject = status === "approved" ? "Session Booking Approved" : "Session Booking Cancelled";
+    // const emailText =
+    //   status === "approved"
+    //     ? `Your session booking has been approved. You can now access your sessions.`
+    //     : `Your session booking has been cancelled. Please contact support for more information.`;
 
-    if (session.user && "email" in session.user) {
-      await sendEmail({
-        to: session.user.email as string,
-        subject: emailSubject,
-        text: emailText,
-      });
-    }
+    // if (session.user && "email" in session.user) {
+    //   await sendEmail({
+    //     to: session.user.email as string,
+    //     subject: emailSubject,
+    //     text: emailText,
+    //   });
+    // }
 
     res.json(session);
   } catch (error) {
